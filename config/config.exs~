@@ -1,0 +1,9 @@
+use Mix.Config
+
+#Configuring the connection port. Port 4000 is now configured.
+#To change the port number in the expression below,
+#replace the number 4000 to the right one.
+config :task_test, cowboy_port: 4000
+
+
+config :task_test, time_of_request: true

@@ -1,0 +1,22 @@
+defmodule TaskTest.ListKeysRedis do
+	@moduledoc """
+	Module for working with the list of keys in the Redis database.
+	Starts the agent that stores the list. Two functions: top up the list, 
+	get the whole list. Works under the supervision of a Supervisor
+	"""
+	use Agent
+
+	@doc false
+
+  def start() do
+		Agent.start_link(fn -> [] end, name: __MODULE__)
+  end
+
+	def put_keys_in_list(key) do
+		Agent.update(__MODULE__, fn list -> [key | list] end)
+	end
+
+	def get_list_keys() do
+		Agent.get(__MODULE__, fn list -> list end)
+	end
+end
