@@ -62,7 +62,7 @@ This will result in incorrect data output for the GET request.
 START. STOP.
 
 To run the application, "Erlang" and "Elixir" must be installed on your computer.
-Download the repository to your computer. At the command line, enter the "Task Test 2" folder.
+Download the repository to your computer. At the command line, enter the "TaskTest2" folder.
 Enter the  command 
 
 	mix deps.get
@@ -82,6 +82,6 @@ To stop the application, press the Crl+c key twice.
 
 TESTS.
 
-To run tests, run the command line. Log in to the "task_test2" folder.  Type the command
+To run tests, run the command line. Log in to the "TaskTest2" folder.  Type the command
 
 	mix test
