@@ -10,7 +10,7 @@ and to get the entire list. Works under the supervision of a Supervisor
 	@doc false
 
   def start() do
-		Agent.start_link(fn -> [] end, name: __MODULE__)
+    Agent.start_link(fn -> [] end, name: __MODULE__)
   end
 
 	def put_keys_in_list(key) do

@@ -23,18 +23,13 @@ The Redis database is used for data storage. The key is used for saving in the d
 where "xxx" is the time of receipt of the request. 
 
 Attention:
-- the app was tested on Windows7.  The application was not tested on other OSS;
-- the application is not configured to work together with other applications on the same port. 
-  The application does not provide verification of the request path. 
-  Therefore, if the path is different from the one specified in the application ("/visited_links" and "/visited_domains"), an error message will be sent in response.
-- the app does not work with Cyrillic. For example, if the array of links in the POST request contains such a link
-	"всеинструменты.рф"
-  the entire request body will be declared invalid.
+- the app not tested on Windows7;
+- to work with other applications on the same port, comment out the "much _ do ..." function in the router (lib/router.ex);
 - the app adjusted to work with port 4000. To change the port, see the "Configuration" section.
-- if you want to display the time when the request was received in the console, before starting in the  file   "working_with_redis.ex"     
-  in the function   "redis_put(list, key)"   uncomment the string
+- if you want not to display the time when the request was received in the console, before starting in the  file   "lib/put_in_redis.ex"     
+  in the function   "redis_put(pid, conn_redis, list, key_str, key)"   comment the string
 
-	#IO.inspect key
+	IO.inspect key
 	
   
 

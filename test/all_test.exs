@@ -10,18 +10,17 @@ defmodule AllTest do
 
 		assert result.state == :sent
 		assert result.path_info == ["visited_domains"]
-		assert result.resp_body == "\"domains\": [], \"status\": \"error, invalid request, request body is empty\""
+		assert result.resp_body == "{\"domains\": [], \"status\": \"error, invalid request, request body is empty\"}"
 	end
 
 
-	test "GET request when initial value is less than final value or
-	less than zero" do
+	test "GET request when initial value is less than final value or less than zero" do
 		conny = conn(:get, "/visited_domains", %{"from"=>"102", "to"=>"100"})
 		result = TaskTest.Router.call(conny, TaskTest.Router.init([]))
 
 		assert result.state == :sent
 		assert result.path_info == ["visited_domains"]
-		assert result.resp_body == "\"domains\": [], \"status\": \"error, invalid request, initial value is less than zero or greater then end value\""
+		assert result.resp_body == "{\"domains\":[],\"status\":\"error, invalid request, initial value is less than zero or greater then end value\"}"
 	end
 
 	
@@ -31,7 +30,7 @@ defmodule AllTest do
 
 		assert result.state == :sent
 		assert result.path_info == ["visited_domains"]
-		assert result.resp_body == "\"domains\": [], \"status\": \"error, invalid request, start value or end value is not a digit\""
+		assert result.resp_body == "{\"domains\":[],\"status\":\"error, invalid request, start value or end value is not a digit\"}"
 	end
 
 
@@ -76,8 +75,8 @@ defmodule AllTest do
 	test "GET request" do
 		conny = conn(:get, "/visited_domains", %{"from"=>"100", "to"=>"102"})
 		result = TaskTest.Router.call(conny, TaskTest.Router.init([]))
-    #assert result.status == 200
 
+    assert result.status == 200
 	  assert result.state == :sent
 		assert result.path_info == ["visited_domains"]
 		assert result.resp_body == "{\"domains\":[],\"status\":\"ok\"}"
@@ -93,48 +92,10 @@ defmodule AllTest do
 		assert key == 999
 	end
 
-
-	test "test parse body request" do
-		list_before = [	
-										"https://ya.ru",
-										"https://ya.ru?q=123",
-										"funbox.ru",
-										"https://stackoverflow.com/questions
-														/11828270/how-to-exit-the-vim-editor"
-					]
-		list_after = [
-										"ya.ru;",
-										"funbox.ru;",
-										"stackoverflow.com;"
-									]
-
-		assert TaskTest.ParseList.parse_list(list_before) == {:ok, list_after}
-		assert TaskTest.ParseList.parse_list("abracodabra") ==
-																					{:error, "invalid request body"}
-	end
-
-
-  test "work_with_redis" do
-    list = ["qqq.com;", "zzz.org;", "yyy.ru;"]
-    answer = TaskTest.WorkingWithRedis.redis_put(list, 1739)
-
-    assert answer == "ok"
-
-    res = TaskTest.WorkingWithRedis.redis_take(1645, 1767)
-    
-    assert res == ["qqq.com", "zzz.org", "yyy.ru"]
-    
-		{:ok, conn} = Redix.start_link("redis://localhost:6379")
-		Redix.command(conn, ["DEL", "task_test728:1739"])
-		Process.exit(conn, :normal)
-	end
-
-
   test "time UTC" do
     t_utc = ~T[16:52:24.617000]
     t_msc = TimeUTC.time_utc_in_msc(t_utc)
 
     assert t_msc == 60744617000 
   end
-  
 end
